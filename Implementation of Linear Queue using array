@@ -1,0 +1,92 @@
+#include<stdio.h>
+int queue[200];
+int front=-1,rear=-1;
+void insert(int data,int MAX) //INSERTING AN ELEMENT
+{
+ 
+if (rear==MAX-1)
+ 
+ {
+ printf("\nQUEUE IS OVERFLOW");
+ return;
+ }
+else if ( front==-1&&rear==-1)
+{
+ front=rear=0;
+ queue[rear]=data;
+}
+else
+{
+rear+=1;
+queue[rear]=data;
+}
+}
+int delete( ) //DELETE ELEMENT
+{
+ int no;
+ if(front==-1||front>rear)
+ {
+ printf("\n QUEUE IS EMPTY");
+ return -1;
+ }
+ else
+ 
+ {
+ no=queue[front];
+ front+=1;
+ if(front>rear)
+ front=rear=-1;
+ return no;
+ }
+}
+int display() //DISPLAY ELEMENTS
+{
+if(front==-1||front>rear)
+ {
+ printf("\n QUEUE IS EMPTY");
+ return -1;
+ }
+ else
+ {
+ printf("\nelements of the queue:");
+ for(int i=front;i<=rear;i++)
+ printf("\t%d",queue[i]);
+ }
+} 
+int main()
+{
+int num,opt,MAX;
+printf("enter max value:");
+scanf("%d",&MAX);
+do
+{
+ printf("\n\n***ENTER OPERATION TO BE EXECUTED***") ;
+ printf("\n1 : INSERT ");
+ printf("\n2 : DELETE ");
+ printf("\n3 : DISPLAY ");
+ printf("\n4 : EXIT");
+ printf(" \nOPERATION NO:");
+ scanf("%d",&opt);
+ switch(opt)
+{
+case 1:
+ printf("\nenter number to be inserted:");
+ scanf("%d",&num);
+ insert(num,MAX);
+ break;
+case 2:
+ num=delete();
+ if(num!=-1)
+ printf("\nThe number deleted from queue:%d ",num);
+ break;
+case 3:
+ display();
+ break;
+case 4:
+ break;
+default:
+ printf("\nenter valid operation\n") ;
+}
+} while (opt!=4);
+return 0;
+}
