@@ -1,0 +1,623 @@
+#include<stdio.h>
+#include<stdlib.h>
+struct node
+{
+ int data;
+ struct node*next;
+};
+struct node*start=NULL;
+struct node1
+{
+ int data1;
+ struct node1*next1;
+};
+struct node*start1=NULL;
+//CREATE LINKED LIST
+void create_list()
+{
+ struct node*new_node,*temp;
+ int no;
+ printf("\n enter no of elements:");
+ scanf("%d",&no);
+ while(no>0)
+ {
+ new_node=(struct node*)malloc(sizeof(struct node));
+ printf("\n enter data:");
+ scanf("%d",&new_node->data);
+ new_node->next=NULL;
+ if(start==NULL)
+ {
+ start=temp=new_node;
+ }
+ else
+ {
+ temp->next=new_node;
+ temp=new_node;
+ }
+ no--;
+ }
+}
+void create_list1()
+{
+ struct node1*new_node1,*temp;
+ int no;
+ printf("\n enter no of elements:");
+ scanf("%d",&no);
+ while(no>0)
+ {
+ new_node1=(struct node1*)malloc(sizeof(struct node1));
+ printf("\n enter data:");
+ scanf("%d",&new_node1->data1);
+ new_node1->next1=NULL;
+ if(start1==NULL)
+ {
+ start1=temp=new_node1;
+ }
+ else
+ {
+ temp->next1=new_node1;
+ temp=new_node1;
+ }
+ no--;
+ }
+}
+//INSERTION OPERATIONS
+//INSERT AT A POSITION
+void insert_pos()
+{
+ struct node*new_node,*temp;
+ int num,position,count=1;
+ new_node=(struct node*)malloc(sizeof(struct node));
+ printf("\n enter position :");
+ scanf("%d",&position);
+ printf("\n enter number to be inserted:");
+ scanf("%d",&new_node->data);
+ temp=start;
+ if(position ==1)
+ {
+ new_node->next=start;
+ start=new_node;
+ }
+ else
+ {
+ while(count<position-1)
+ {
+ temp=temp->next;
+ count+=1;
+ }
+ printf("\n %d inserted at position %d ",new_node->data,position);
+ new_node->next=temp->next;
+ temp->next=new_node;
+ }
+}
+//INSERT A NODE AFTER A NODE WITH VALUE NUM
+void insert_after( )
+{
+ struct node*new_node,*temp,*pre_temp;
+ int num;
+ new_node=(struct node*)malloc(sizeof(struct node));
+ printf("\n enter number after which data has to be inserted:");
+ scanf("%d",&num);
+ printf("\n enter number to be inserted:");
+ scanf("%d",&new_node->data);
+ temp=start;
+ pre_temp=temp;
+ while(pre_temp->data!=num)
+ {
+ pre_temp=temp;
+ temp=temp->next;
+ }
+ printf("\n %d inserted after %d",new_node->data,num);
+ pre_temp->next=new_node;
+ new_node->next=temp;
+}
+//INSERT A NODE BEFORE A NODE WITH VALUE NUM
+void insert_before( )
+{
+ struct node*new_node,*temp,*pre_temp;
+ int num;
+ new_node=(struct node*)malloc(sizeof(struct node));
+ printf("\n enter number before which data has to be inserted:");
+ scanf("%d",&num);
+ printf("\n enter number to be inserted:");
+ scanf("%d",&new_node->data);
+ temp=start;
+ while(temp->data!=num)
+ {
+ pre_temp=temp;
+ temp=temp->next;
+ }
+ printf("\n %d inserted before %d",new_node->data,num);
+ pre_temp->next=new_node;
+ new_node->next=temp;
+}
+//INSERT A NODE AT THE BEGINNING
+void insert_begin()
+{
+ struct node*new_node;
+ new_node=(struct node*)malloc(sizeof(struct node));
+ int num;
+ printf("\n enter element to be inserted:");
+ scanf("%d",&num);
+ new_node->data=num;
+ new_node->next=start;
+ start=new_node;
+ printf("\n element inserted");
+}
+//INSERT A NODE AT THE END
+void insert_end()
+{
+struct node*new_node,*temp;
+ new_node=(struct node*)malloc(sizeof(struct node));
+ printf("\n enter number to be inserted:");
+ scanf("%d",&new_node->data);
+ new_node->next=NULL;
+ temp=start;
+ while(temp->next!=NULL)
+ {
+ temp=temp->next;
+ }
+ temp->next=new_node;
+ printf("\n element inserted");
+}
+//DELETION OPERATIONS
+//DELETE A VALUE AT A PARTICULAR POSITION
+void delete_pos()
+{
+ struct node*temp,*pre_temp;
+ int position,count=0;
+ printf("\n enter position :");
+ scanf("%d",&position);
+ temp=start;
+ if(start==NULL)
+ printf("\n LINKED LIST IS EMPTY");
+ else if(position==1)
+ {
+ delete_begin();
+ }
+ else
+ {
+ while(count<position-1)
+ {
+ pre_temp=temp;
+ temp=temp->next;
+ count+=1;
+ }
+ printf("\n %d deleted from linked list",temp->data);
+ pre_temp->next=temp->next;
+ free(temp);
+ }
+}
+//DELETE A NODE FROM THE BEGINNING
+void delete_begin()
+{
+ struct node*temp;
+ temp=start;
+if(start==NULL)
+ printf("\n LINKED LIST IS EMPTY");
+else
+ {
+ printf("\n %d deleted from linked list. ",temp->data);
+ start=start->next;
+ free(temp);
+ }
+}
+//DELETE A NODE FROM THE END
+void delete_end()
+{
+ struct node*temp,*pre_temp;
+ temp=start;
+ if(start==NULL)
+ printf("\n LINKED LIST IS EMPTY");
+ else
+ {
+ while(temp->next!=NULL)
+ {
+ pre_temp=temp;
+ temp=temp->next;
+ }
+ printf("\n %d deleted from the linked list",temp->data);
+ pre_temp->next=NULL;
+ free(temp);
+ }
+}
+//DELETE A NODE AFTER THE NODE WITH VALUE NUM
+void delete_after()
+{
+ struct node*temp,*pre_temp;
+ int num;
+ temp=start;
+ pre_temp=temp;
+ if(start==NULL)
+ printf("\n LINKED LIST IS EMPTY");
+ else
+ {
+ printf("\n enter the number after which the node has to be deleted:");
+ scanf("%d",&num);
+ while(pre_temp->data!=num)
+ {
+ pre_temp=temp;
+ temp=temp->next;
+ }
+ printf("\n %d deleted from the linked list",temp->data);
+ pre_temp->next=temp->next;
+ free(temp);
+ }
+}
+//DELETE A NODE BEFORE A PARTICULAR VALUE
+void delete_before()
+{
+struct node*temp,*ptr;
+int num;
+printf("\n enter value before which value has to deleted:");
+scanf("%d",&num);
+temp=start;
+if(start==NULL)
+ printf("\n LINKED LIST IS EMPTY");
+ else if(temp->next->data==num)
+{
+ delete_begin();
+}
+else
+ {
+while(temp->next->next->data!=num && temp->next->next!=NULL)
+{
+ temp=temp->next;
+}
+printf("\n %d deleted from the linked list",temp->next->data);
+ptr=temp->next;
+temp->next=temp->next->next;
+free (ptr);
+ }
+}
+//UPDATION OPERATIONS
+//UPDATE VALUE AT A GIVEN POSITION
+void update_pos()
+{
+ struct node*temp;
+ int num,position,count=0;
+ printf("\n enter position :");
+ scanf("%d",&position);
+ printf("\n enter number to be inserted:");
+ scanf("%d",&num);
+ temp=start;
+ if(start==NULL)
+ printf("\n LINKED LIST IS EMPTY");
+ else if(position ==1)
+ {
+ temp->data=num;
+ start=temp;
+ }
+ else
+ {
+ while(count<position-1)
+ {
+ temp=temp->next;
+ count+=1;
+ }
+ temp->data=num;
+ }
+ printf("\n value updated!!");
+}
+//UPDATE VALUE AT BEGINNING
+void update_begin()
+{
+struct node*temp;
+int num;
+printf("\n enter value to be updated:");
+scanf("%d",&num);
+if(start==NULL)
+ printf("\n LINKED LIST IS EMPTY");
+else
+{
+ temp=start;
+ temp->data=num;
+ start=temp;
+ printf("\n value updated.");
+}
+}
+//UPDATE VALUE AT THE END
+void update_end()
+{
+struct node*temp;
+int num;
+printf("\n enter value to be updated:");
+scanf("%d",&num);
+if(start==NULL)
+ printf("\n LINKED LIST IS EMPTY");
+ else
+{
+ temp=start;
+ while(temp->next!=NULL)
+ {
+ temp=temp->next;
+ }
+ temp->data=num;
+ printf("\n value updated");
+}
+}
+//UPDATE VALUE AFTER A PARTICULAR VALUE
+void update_after()
+{
+struct node*temp,*pre_temp;
+int num,no;
+if(start==NULL)
+ printf("\n LINKED LIST IS EMPTY");
+else
+{
+ printf("\n enter value after which value has to updated:");
+scanf("%d",&no);
+printf("\n enter value to be updated:");
+scanf("%d",&num);
+temp=start;
+pre_temp=temp;
+while(pre_temp->data!=no)
+ {
+ pre_temp=temp;
+ temp=temp->next;
+ }
+ printf("\n value updated");
+ temp->data=num;
+ pre_temp->next=temp;
+}
+}
+//UPDATE VALUE BEFORE A PARTICULAR VALUE
+void update_before()
+{
+struct node*temp,*ptr;
+int num,no;
+if(start==NULL)
+ printf("\n LINKED LIST IS EMPTY");
+ else
+{printf("\n enter value before which value has to updated:");
+scanf("%d",&num);
+printf("\n enter value to be updated:");
+scanf("%d",&no);
+temp=start;
+if(temp->next->data==num)
+{
+ temp->data=num;
+ start=temp;
+}
+else
+ {
+while(temp->next->next->data!=num && temp->next->next!=NULL)
+{
+ temp=temp->next;
+}
+temp->next->data=no;
+ }
+ printf("\n value updated!!");
+}
+}
+//DISPLAY LINKED LIST
+void display_list()
+{
+ struct node*temp;
+ temp=start;
+ if(start==NULL)
+ printf("\n LINKED LIST IS EMPTY");
+ else
+ {
+ printf("\n elements of the linked list:");
+ while(temp!=NULL)
+ {
+ printf("\t%d",temp->data);
+ temp=temp->next;
+ }
+ }
+}
+//SEARCH AN ELEMENT
+void search_data()
+{
+ struct node*temp;
+ int num,node_no=1,found=0;
+ temp=start;
+ printf("\n enter element to be searched:");
+ scanf("%d",&num);
+ if(start==NULL)
+ printf("\n LINKED LIST IS EMPTY");
+ else
+ {
+ while(temp!=NULL)
+ {
+ if(temp->data==num)
+ {
+ found=1;
+ break;
+ }
+ else
+ { node_no+=1;
+ temp=temp->next;
+ }
+ }
+ if(found!=1)
+ printf("\n %d not found",num);
+ else
+ printf("\n element %d found at node %d",num,node_no);
+ }
+}
+//COUNT NO OF NODES
+void count_nodes()
+{
+ struct node*temp;
+ temp=start;
+ int count=0;
+ if(start==NULL)
+ printf("\n LINKED LIST IS EMPTY");
+ else
+ {
+ while(temp!=NULL)
+ {
+ count+=1;
+ temp=temp->next;
+ }
+ printf("\n no of nodes:%d",count);
+ }
+}
+//SORT LINKED LIST
+void sort_list()
+{
+ struct node*ptr,*pre_ptr;
+ int temp;
+ ptr=start;
+ while(ptr->next!=NULL)
+ {
+ pre_ptr=ptr->next;
+ while(pre_ptr!=NULL)
+ {
+ if(ptr->data > pre_ptr->data)
+ {
+ temp=ptr->data;
+ ptr->data=pre_ptr->data;
+ pre_ptr->data=temp;
+ }
+ pre_ptr=pre_ptr->next;
+ }
+ ptr=ptr->next;
+ }
+printf("\n After sorting:");
+display_list();
+}
+//REVERSE A SINGLY LINKED LIST
+void reverse_list()
+{
+ struct node*current,*pre_ptr,*ptr;
+ current=start;
+ pre_ptr=NULL;
+ ptr=NULL;
+ while(current!=NULL)
+ {
+ ptr=current->next;
+ current->next=pre_ptr;
+ pre_ptr=current;
+ current=ptr;
+ }
+ start=pre_ptr;
+ printf("\n reversed linked list:");
+ display_list();
+}
+//MERGE TWO SLL
+//CONCATENATE TWO SLL
+void concate()
+{
+ struct node*temp;
+ printf("\n For elements of SLL1:");
+ create_list();
+ printf("\n For elements of SLL2:");
+ create_list1();
+ temp=start;
+ while(temp->next!=NULL)
+ {
+ temp=temp->next;
+ }
+ temp->next=start1;
+}
+int main()
+{
+ int opt;
+ do
+ {//correct this part
+ printf("\n\n#ENTER OPERATION TO BE PERFORMED");
+ printf("\n 1.CREATE A SINGLY LINKED LIST");
+ printf("\n 2.INSERT A NODE AT A POSITION");
+ printf("\n 3.INSERT A NODE AT THE BEGINNING");
+ printf("\n 4.INSERT A NODE AT THE END");
+ printf("\n 5.INSERT A NODE AFTER A NODE");
+ printf("\n 6.INSERT A NODE BEFORE A NODE");
+ printf("\n 7.DELETE A NODE AT A POSITION");
+ printf("\n 8.DELETE A NODE AT THE BEGINNING");
+ printf("\n 9.DELETE A NODE AT THE END");
+ printf("\n 10.DELETE A NODE AFTER A NODE");
+ printf("\n 11.DELETE A NODE BEFORE A NODE");
+ printf("\n 12.UPDATE VALUE AT A POSITION");
+ printf("\n 13.UPDATE VALUE AT THE BEGINNING");
+ printf("\n 14.UPDATE VALUE AT THE END");
+ printf("\n 15.UPDATE VALUE AFTER A NODE");
+ printf("\n 16.UPDATE VALUE BEFORE A NODE");
+ printf("\n 17.SEARCH DATA IN LINKED LIST");
+ printf("\n 18.COUNT NO OF NORDS");
+ printf("\n 19.SORT LINKED LIST");
+ printf("\n 20.REVERSE LINKED LIST");
+ printf("\n 21.CONCATENATE TWO SINGLY LINKED LIST ");
+ printf("\n 22.DISPLAY SINGLY LINKED LIST ");
+ printf("\n 23.EXIT");
+ printf("\n OPERATION NO:");
+ scanf("%d",&opt);
+ switch(opt)
+ {
+ case 1:
+ create_list();
+ break;
+ case 2:
+ insert_pos();
+ break;
+ case 3:
+ insert_begin();
+ break;
+ case 4:
+ insert_end();
+ break;
+ case 5:
+ insert_after();
+ break;
+ case 6:
+ insert_before();
+ break;
+ case 7:
+ delete_pos();
+ break;
+ case 8:
+ delete_begin();
+ break;
+ case 9:
+ delete_end();
+ break;
+ case 10:
+ delete_after();
+ break;
+ case 11:
+ delete_before();
+ break;
+ case 12:
+ update_pos();
+ break;
+ case 13:
+ update_begin();
+ break;
+ case 14:
+ update_end();
+ break;
+ case 15:
+ update_after();
+ break;
+ case 16:
+ update_before();
+ break;
+ case 17:
+ search_data();
+ break;
+ case 18:
+ count_nodes();
+ break;
+ case 19:
+ sort_list();
+ break;
+ case 20:
+ reverse_list();
+ break;
+ case 21:
+ concate();
+ break;
+ case 22:
+ display_list();
+ break;
+ case 23:
+ break;
+ default:
+ printf("\n invalid operation.");
+ break;
+ }
+ }while(opt!=23);
+return 0;
+}
