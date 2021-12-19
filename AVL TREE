@@ -1,0 +1,247 @@
+#include<stdio.h>
+#include<conio.h>
+#include<malloc.h>
+struct node
+{
+int data;
+int height;
+struct node*left;
+struct node*right;
+};
+struct node*root;
+//finding height of AVL TREE
+int height(struct node*root)
+{
+int left_height,right_height;
+if(root==NULL)
+return 0;
+else
+{
+left_height=height(root->left);
+right_height=height(root->right);
+if(left_height>right_height)
+return (left_height+1);
+else
+return (right_height+1);
+}
+}
+// R Rotation
+struct node *rightRotate(struct node *root)
+{
+struct node *temp1 = root->left;
+struct node *temp2 = temp1->right;
+temp1->right =root;
+root->left = temp2;
+root->height = height(root);
+temp1->height = height(temp1);
+return temp1;
+}
+// L Rotation
+struct node *leftRotate(struct node *root){
+struct node *temp1 = root->right;
+struct node *temp2 = temp1->left;
+temp1->left = root;
+root->right = temp2;
+root->height = height(root);
+temp1->height = height(root);
+return temp1;
+}
+//Balance factor
+int Balance_factor(struct node*root){
+if (root== NULL)
+return 0;
+else
+return height(root->left) - height(root->right);
+}
+//inserting a node
+struct node*insert(struct node*root,int num)
+{
+struct node*new_node;
+new_node=(struct node*)malloc(sizeof(struct node));
+new_node->data=num;
+new_node->height=0;
+new_node->left=NULL;
+new_node->right=NULL;
+if(root==NULL)
+{
+root=new_node;
+return root;
+}
+else if (num<root->data)
+{
+root->left=insert(root->left,num);
+}
+else if(num>root->data)
+{
+root->right=insert(root->right,num);
+}
+else
+return root;
+//balancing the tree
+root->height = height(root);
+int bf = Balance_factor(root);
+if (bf > 1 && num < root->left->data)
+return rightRotate(root);
+if (bf < -1 &&num> root->right->data)
+return leftRotate(root);
+if (bf > 1 &&num > root->left->data)
+{
+root->left = leftRotate(root->left);
+return rightRotate(root);
+}
+if (bf < -1 && num < root->right->data)
+{
+root->right = rightRotate(root->right);
+return leftRotate(root);
+}
+return root;
+};
+//creating a node
+struct node*create(struct node*root)
+{
+int n,num,i;
+root=NULL;
+printf("\n enter no of nodes:");
+scanf("%d",&n);
+for(i=0;i<n;i++)
+{
+printf("\n enter tree value:");
+scanf("%d",&num);
+root=insert(root,num);
+}
+printf("\nBST created");
+return root;
+}
+struct node*min(struct node*root)//leftmost child of the left subtree
+{
+if((root==NULL)||(root->left==NULL))
+return root;
+else
+return min(root->left);
+}
+//deleting a node
+struct node*delete_node (struct node*root,int no)
+{
+if (root == NULL)
+return root;
+if (no < root->data)
+root->left = delete_node(root->left, no);
+else if (no> root->data)
+root->right = delete_node(root->right, no);
+else {
+if ((root->left == NULL) || (root->right == NULL))
+{
+struct node *temp = root->left ? root->left : root->right;
+if (temp == NULL) {
+temp = root;
+root = NULL;
+}
+else
+*root = *temp;
+free(temp);
+}
+else
+{
+struct node *temp = min(root->right);
+root->data = temp->data;
+root->right = delete_node(root->right, temp->data);
+}
+}
+if (root == NULL)
+return root;
+//balancing the tree
+root->height = height(root);
+int bf = Balance_factor(root);
+if (bf> 1 && Balance_factor(root->left) >= 0)
+return rightRotate(root);
+if (bf > 1 && Balance_factor(root->left) < 0)
+{
+root->left = leftRotate(root->left);
+return rightRotate(root);
+}
+if (bf < -1 && Balance_factor(root->right) <= 0)
+return leftRotate(root);
+if (bf < -1 && Balance_factor(root->right) > 0)
+{
+root->right = rightRotate(root->right);
+return leftRotate(root);
+}
+return root;
+};
+//search an element
+struct node*search(struct node*root,int val)
+{
+struct node*temp;
+if(root==NULL)
+printf("\n element not found");
+else if (root->data==val)
+printf("\n element found");
+else if (root->data>val)
+return search(root->left,val);
+else
+return search(root->right,val);
+}
+//count no of nodes
+int total_nodes(struct node*root)
+{
+if(root==NULL)
+return 0;
+else
+return total_nodes(root->left)+total_nodes(root->right)+1;
+}
+//print/display
+void display(struct node*root)
+{
+if(root!=NULL)
+{
+printf("\t%d",root->data);
+display(root->left);
+display(root->right);
+}
+}
+//main
+int main()
+{
+int opt,num,no;
+do {
+printf("\n\n#ENTER OPERATION TO BE PERFORMED#");
+printf("\n1.CREATE AN AVL TREE");
+printf("\n2.INSERT A NODE");
+printf("\n3.DELETE A NODE");
+printf("\n4.SEARCH AN ELEMENT");
+printf("\n5.HEIGHT OF A AVL TREE");
+printf("\n6.TOTAL NO OF NODES");
+printf("\n7.DISPLAY AVL TREE");
+printf("\n8.EXIT");
+printf("\nENTER OPERATION NO:");
+scanf("%d",&opt);
+switch(opt)
+{
+case 1:root=create(root);
+break;
+case 2: printf("\n enter number to be inserted:");
+scanf("%d",&num);
+root=insert(root,num);
+printf("\n %d inserted",num);
+break;
+case 3:printf("\n enter number to be deleted:");
+scanf("%d",&num);
+root=delete_node(root,num);
+printf("\n %d deleted",num);
+break;
+case 4: printf("\n enter number to be searched: ");
+scanf("%d",&no);
+search(root,no);
+break;
+case 5:printf("\n height of tree:%d",height(root));
+break;
+case 6:printf("\n total no of nodes:%d",total_nodes(root));
+break;
+case 7:printf("\n Elements of AVL Tree:");
+display(root);
+break;
+case 8:break;
+}
+}while(opt!=8);
+return 0;
+}
