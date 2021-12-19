@@ -1,0 +1,102 @@
+#include <stdio.h>
+int stack_arr[200];
+int top=-1;
+void push(int data,int MAX) //PUSH OPERATION
+{
+ if(top==MAX-1)
+ {
+ printf("\nSTACK OVERFLOW\n");
+ }
+ else
+ {
+ top+=1;
+ stack_arr[top]=data;
+ }
+}
+int pop() // POP OPERATION
+{
+ int value;
+ if(top==-1)
+ {
+ printf("\nSTACK IS EMPTY\n");
+ return -1;
+ }
+ else
+ {
+ value=stack_arr[top];
+ top-=1;
+ return value;
+ }
+}
+int peek() //PEEK OPERATION
+{
+ int i;
+ if(top==-1)
+ {
+ printf("\nSTACK IS EMPTY\n");
+ return -1;
+ }
+ else
+ {
+ return stack_arr[top];
+ }
+}
+int display() //DISPLAY STACK
+{
+ int j;
+ if(top==-1)
+ {
+ printf("\nSTACK IS EMPTY\n");
+ }
+ else
+ {
+ printf("elements of the stack are:");
+ for(j=top;j>=0;j--)
+ {
+ printf("\n%d",stack_arr[j]);
+ }
+ }
+}
+int main()
+{
+int num,opt,MAX;
+printf("enter max value:");
+scanf("%d",&MAX);
+do
+{
+ printf("\n\n***ENTER OPERATION TO BE EXECUTED***") ;
+ printf("\n1 : PUSH ");
+ printf("\n2 : POP ");
+ printf("\n3 : PEEK ");
+ printf("\n4 : DISPLAY ");
+ printf("\n5 : EXIT ");
+ printf(" \nOPERATION NO:");
+ scanf("%d",&opt);
+ switch(opt)
+{
+case 1:
+ printf("\nenter number to be pushed:");
+ scanf("%d",&num);
+ push(num,MAX);
+ break;
+case 2:
+ num=pop();
+ if(num!=-1)
+ printf("\nThe number deleted from stack:%d ",num);
+ break;
+case 3:
+ num=peek();
+ if(num!=-1)
+ printf("\nThe topmost element of stack:%d",num);
+ break;
+case 4:
+ display();
+ break;
+case 5:
+ break;
+default:
+ printf("\nenter valid operation\n") ;
+}
+} while (opt!=5);
+return 0;
+}
