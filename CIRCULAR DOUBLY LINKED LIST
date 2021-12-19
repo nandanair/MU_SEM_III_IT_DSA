@@ -1,0 +1,443 @@
+#include<stdio.h>
+#include<stdlib.h>
+struct node
+{
+ struct node*prev;
+ int data;
+ struct node*next;
+};
+struct node*start=NULL;
+//create a cdll
+void create()
+{
+ struct node*new_node,*temp;
+ int num,no;
+ printf("\nenter no of elements:");
+ scanf("%d",&num);
+ while(num>0)
+ {
+ printf("\nEnter the node data:");
+ scanf("%d",&no );
+ if(start==NULL)
+ {
+ new_node = (struct node*)malloc(sizeof(struct node));
+ start=new_node;
+ new_node->data=no;
+ new_node->next=start;
+ new_node->prev=start;
+ }
+ else
+ {
+ new_node = (struct node*)malloc(sizeof(struct node));
+ new_node->data=no;
+ temp=start;
+ while(temp->next!=start)
+ {
+ temp=temp->next;
+ }
+ new_node->prev=temp;
+ temp->next=new_node;
+ new_node->next=start;
+ start->prev=new_node;
+ }
+ num=num-1;
+ }
+ printf("\nCIRCULAR DOUBLY LINKED LIST CREATED");
+}
+//insert at a position
+void insert_pos()
+{
+ struct node*new_node,*temp;
+ int no,position,count=1;
+ printf("\nenter position at which node has to be inserted:");
+ scanf("%d",&position);
+ printf("\nenter data of new node:");
+ scanf("%d",&no);
+ temp=start;
+ if(position==1)
+ {
+ new_node = (struct node*)malloc(sizeof(struct node));
+ new_node->data=no;
+ temp->prev=new_node->prev;
+ new_node->next=temp;
+ temp->prev=new_node;
+ while(temp->next!=start)
+ {
+ temp=temp->next;
+ }
+ temp->next=new_node;
+ start=new_node;
+ }
+ else
+ {
+ while(count<position-1)
+ {
+ temp=temp->next;
+ count=count+1;
+ }
+ new_node = (struct node*)malloc(sizeof(struct node));
+ new_node->data=no;
+ new_node->next=temp->next;
+ temp->next->prev=new_node;
+ temp->next=new_node;
+ new_node->prev=temp;
+ }
+ printf("\n%d inserted at position %d",no,position);
+}
+//insert after a value
+void insert_after()
+{
+ struct node*new_node,*temp;
+ new_node = (struct node*)malloc(sizeof(struct node));
+ int num;
+ printf("\n enter number after which number has to inserted:");
+ scanf("%d",&num);
+ printf("\n enter data:");
+ scanf("%d",&new_node->data);
+ temp=start;
+ while(temp->data!=num)
+ {
+ temp=temp->next;
+ }
+ new_node->prev=temp;
+ new_node->next=temp->next;
+ temp->next->prev=new_node;
+ temp->next=new_node;
+ printf("\n%d inserted after %d",new_node->data,num);
+}
+//insert before a value
+void insert_before()
+{
+ struct node*new_node,*temp;
+ new_node = (struct node*)malloc(sizeof(struct node));
+ int num;
+ printf("\n enter number before which number has to inserted:");
+ scanf("%d",&num);
+ printf("\n enter data:");
+ scanf("%d",&new_node->data);
+ temp=start;
+ while(temp->data!=num)
+ {
+ temp=temp->next;
+ }
+ new_node->next=temp;
+ new_node->prev=temp->prev;
+ temp->prev->next=new_node;
+ temp->prev=new_node;
+ printf("\n%d inserted before %d",new_node->data,num);
+}
+//update at a position
+void update_pos()
+{
+ struct node*temp,*ptr;
+ int no,position,count=0;
+ printf("\nenter position at which value has to be updated:");
+ scanf("%d",&position);
+ printf("\nenter updated value:");
+ scanf("%d",&no);
+ temp=start;
+ if(start==NULL)
+ {
+ printf("\nCIRCULAR DOUBLY LINKED LIST IS EMPTY");
+ }
+ else if (position==1)
+ {
+ temp->data=no;
+ temp->next->prev=start;
+ ptr=start;
+ while(ptr->next!=start)
+ {
+ ptr=ptr->next;
+ }
+ ptr->next=temp;
+ printf("\nvalue updated at position 1");
+ }
+ else
+ {
+ while(count<position-1)
+ {
+ temp=temp->next;
+ count+=1;
+ }
+ temp->data=no;
+ temp->prev->next=temp;
+ temp->next->prev=temp;
+ printf("\nvalue updated at position %d",position);
+ }
+}
+//update after a value
+void update_after()
+{
+ struct node*pre_temp,*temp;
+ int num,no;
+ printf("\nenter value after which value has to be updated:");
+ scanf("%d",&num);
+ printf("\nenter updated value:");
+ scanf("%d",&no);
+ temp=start;
+ if(start==NULL)
+ {
+ printf("\nCIRCULAR DOUBLY LINKED LIST IS EMPTY");
+ }
+ else
+ {
+ while(pre_temp->data!=num)
+ {
+ pre_temp=temp;
+ temp=temp->next;
+ }
+ temp->data=no;
+ pre_temp->next=temp;
+temp->next->prev=temp;
+ printf("\n value updated after %d",num);
+ }
+}
+//update before a value
+void update_before()
+{
+ struct node*pre_temp,*temp;
+ int num,no;
+ printf("\nenter value before which value has to be updated:");
+ scanf("%d",&num);
+ printf("\nenter updated value:");
+ scanf("%d",&no);
+ temp=start;
+ if(start==NULL)
+ {
+ printf("\nCIRCULAR DOUBLY LINKED LIST IS EMPTY");
+ }
+ else
+ {
+ while(temp->data!=num)
+ {
+ pre_temp=temp;
+ temp=temp->next;
+ }
+ pre_temp->data=no;
+ pre_temp->prev->next=pre_temp;
+ temp->prev=pre_temp;
+ printf("\nvalue updated before %d",num);
+ }
+}
+//delete at a position
+void delete_pos()
+{
+ struct node*temp,*pre_temp;
+ int position,count=0;
+ printf("\n enter position :");
+ scanf("%d",&position);
+ temp=start;
+ if(start==NULL)
+ {
+ printf("\nCIRCULAR DOUBLY LINKED LIST IS EMPTY");
+ }
+ else if(position==1)
+ {
+ pre_temp=temp->next;
+ while(temp->next!=start)
+ {
+ temp=temp->next;
+ }
+ temp->next=pre_temp;
+ pre_temp->prev=temp;
+ start=pre_temp;
+ printf("\nnode at position 1 deleted");
+ }
+ else
+ {
+ while(count<position-1)
+ {
+ pre_temp=temp;
+ temp=temp->next;
+ count+=1;
+ }
+ pre_temp->next=temp->next;
+ temp->next->prev=pre_temp;
+ printf("\nnode at position %d deleted",position);
+ }
+}
+//delete after a value
+void delete_after()
+{
+ struct node*temp,*ptr;
+ int num;
+ printf("\nEnter value after which node has to be deleted:");
+ scanf("%d",&num);
+ temp=start;
+ if(start==NULL)
+ {
+ printf("\nCIRCULAR DOUBLY LINKED LIST IS EMPTY");
+ }
+ else
+ {
+ while(temp->data!=num)
+ {
+ temp=temp->next;
+ }
+ ptr=temp->next;
+ temp->next=ptr->next;
+ ptr->next->prev=temp;
+ printf("node after %d deleted ",num);
+ }
+}
+//delete before a value
+void delete_before()
+{
+ struct node*temp,*ptr;
+ int num;
+ printf("\nEnter value before which node has to be deleted:");
+ scanf("%d",&num);
+ temp=start;
+ if(start==NULL)
+ {
+ printf("\nCIRCULAR DOUBLY LINKED LIST IS EMPTY");
+ }
+ else{
+ while(temp->data!=num)
+ {
+ temp=temp->next;
+ }
+ ptr=temp->prev;
+ if(ptr==start)
+ {
+ while(ptr->next!=start)
+ {
+ ptr=ptr->next;
+ }
+ ptr->next=start->next;
+ temp=start;
+ start=start->next;
+ start->prev=ptr;
+ }
+ else
+ {
+ temp->prev=ptr->prev;
+ ptr->prev->next=temp;
+ }
+ printf("\nnode before %d deleted ",num);
+ }
+}
+//search
+void search_data()
+{
+ struct node*temp;
+ int num,node_no=1,found=0;
+ temp=start;
+ printf("\n enter element to be searched:");
+ scanf("%d",&num);
+ if(start==NULL)
+ printf("\n CIRCULAR DOUBLY LINKED LIST IS EMPTY");
+ else
+ {
+ while(temp!=NULL)
+ {
+ if(temp->data==num)
+ {
+ found=1;
+ break;
+ }
+ else
+ { node_no+=1;
+ temp=temp->next;
+ }
+ }
+ if(found!=1)
+ printf("\n %d not found",num);
+ else
+ printf("\n element %d found at node %d",num,node_no);
+ }
+}
+//count nodes
+void count_nodes()
+{
+ struct node*temp;
+ temp=start;
+ int count=1;
+ if(start==NULL)
+ printf("\n CIRCULAR DOUBLY LINKED LIST IS EMPTY");
+ else
+ {
+ while(temp->next!=start)
+ {
+ count+=1;
+ temp=temp->next;
+ }
+ printf("\n no of nodes:%d",count);
+ }
+}
+//display
+void display()
+{
+ struct node*temp;
+temp=start;
+printf("\n elements of the circular doubly linked list:");
+if(start==NULL)
+ {
+ printf("\nCIRCULAR DOUBLY LINKED LIST IS EMPTY");
+ }
+ else
+ {
+while(temp->next!=start)
+{
+ printf("\t%d",temp->data);
+ temp=temp->next;
+}
+printf("\t%d",temp->data);
+ }
+}
+int main()
+{
+ int opt;
+ do{
+ printf("\n\n##ENTER OPERATION TO BE PERFORMED##");
+ printf("\n1.CREATE A CIRCULAR DOUBLY LINKED LIST");
+ printf("\n2.INSERT A NODE AT ANY POSITION:");
+ printf("\n3.INSERT A NODE AFTER A NODE");
+ printf("\n4.INSERT A NODE BEFORE A NODE");
+ printf("\n5.UPDATE VALUE AT ANY POSITION");
+ printf("\n6.UPDATE VALUE AFTER A NODE");
+ printf("\n7.UPDATE VALUE BEFORE A NODE");
+ printf("\n8.DELETE A NODE AT ANY POSITION");
+ printf("\n9.DELETE A NODE AFTER A NODE");
+ printf("\n10.DELETE A NODE BEFORE A NODE");
+ printf("\n11.SEARCH AN ELEMENT");
+ printf("\n12.COUNT NUMBER OF NODES");
+ printf("\n13.DISPLAY ");
+ printf("\n14.EXIT");
+ printf("\nENTER OPERATION NO:");
+ scanf("%d",&opt);
+ switch(opt)
+ {
+ case 1:create();
+ break;
+ case 2:insert_pos();
+ break;
+ case 3:insert_after();
+ break;
+ case 4:insert_before();
+ break;
+ case 5:update_pos();
+ break;
+ case 6:update_after();
+ break;
+ case 7:update_before();
+ break;
+ case 8:delete_pos();
+ break;
+ case 9:delete_after();
+ break;
+ case 10:delete_before();
+ break;
+ case 11:search_data();
+ break;
+ case 12:count_nodes();
+ break;
+ case 13:display();
+ break;
+ case 14:break;
+ default:printf("\nenter valid operation number");
+ break;
+ }
+ }while(opt!=14);
+ return 0;
+}
