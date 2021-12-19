@@ -1,0 +1,96 @@
+#include<stdio.h>
+#include<stdlib.h>
+struct node
+{
+ int data;
+ struct node *next;
+};
+struct node *FRONT=NULL;
+struct node *REAR=NULL;
+//INSERT OPERATION
+void insert()
+{
+ struct node*new_node;
+ int num;
+ new_node=(struct node*)malloc(sizeof(struct node));
+ printf("\nenter value to be inserted:");
+ scanf("%d",&num);
+ new_node->data=num;
+ if(FRONT==NULL)
+ {
+ FRONT=REAR=new_node;
+ FRONT->next=REAR->next=NULL;
+ }
+ else
+ {
+ REAR->next=new_node;
+ REAR=new_node;
+ REAR->next=NULL;
+ }
+ printf("\nelement inserted");
+}
+//DELETE OPERATION
+void delete()
+{
+ struct node*temp;
+ if(FRONT==NULL)
+ {
+ printf("\nUNDERFLOW");
+ }
+ else
+ {
+ printf("%d deleted from queue",FRONT->data);
+ temp=FRONT;
+ FRONT=FRONT->next;
+ free(temp);
+ }
+}
+//DISPLAY OPERATION
+void display()
+{
+ struct node*temp;
+ temp=FRONT;
+ if(FRONT==NULL)
+ printf("LINKED LIST IS EMPTY");
+ else
+ {
+ printf("\nelements of the queue:");
+ while(temp!=NULL)
+ {
+ printf("\t%d",temp->data);
+ temp=temp->next;
+ }
+ }
+}
+int main ()
+{
+ int opt;
+ do
+ {
+ printf("\n\n\n##LINKED LIST IMPLEMENTATION OF QUEUE##") ;
+ printf("\nENTER OPERATION TO BE EXECUTED");
+ printf("\n1.INSERT");
+ printf("\n2.DELETE");
+ printf("\n3.DISPLAY");
+ printf("\n4.EXIT");
+ printf("\nOPERATION NO:");
+ scanf("%d",&opt);
+ switch(opt)
+ {
+ case 1:
+ insert();
+ break;
+ case 2:
+ delete();
+ break;
+ case 3:
+ display();
+ break;
+ case 4:
+ break;
+ default:
+ printf("\nEnter valid option\n");
+ }
+ }while(opt!= 4);
+ return 0;
+}
