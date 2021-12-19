@@ -1,0 +1,432 @@
+#include<stdio.h>
+#include<stdlib.h>
+struct node
+{
+ int data;
+ struct node*next;
+};
+struct node*start=NULL;
+//CREATE LIST
+void create()
+{
+ struct node*new_node,*temp;
+ int no;
+ printf("enter no of elements:");
+ scanf("%d",&no);
+while(no>0)
+{
+new_node = (struct node*)malloc(sizeof(struct node));
+ printf("\nEnter the node data:");
+ scanf("%d",&new_node -> data );
+ if(start == NULL)
+ {
+ start= new_node;
+ new_node -> next =start;
+ }
+ else
+ {
+ temp = start;
+ while(temp->next != start)
+ temp = temp->next;
+ new_node->next = start;
+ temp -> next = new_node;
+ }
+ no--;
+}
+}
+//INSERT AT ANY POSITION
+void insert_pos()
+{
+ struct node*new_node,*temp;
+ int num,position,count=1;
+new_node=(struct node*)malloc(sizeof(struct node));
+printf("\n enter position :");
+scanf("%d",&position);
+printf("\n enter number to be inserted:");
+scanf("%d",&num);
+ if(position==1)
+ {
+ new_node->data=num;
+ new_node->next=start;
+ temp=start;
+ while(temp->next!=start)
+ {
+ temp=temp->next;
+ }
+ temp->next=new_node;
+ start=new_node;
+printf("element inserted");
+ }
+ else
+ {
+ new_node->data=num;
+ temp=start;
+ while(count<position-1)
+ {
+ temp=temp->next;
+ count=count+1;
+ }
+ new_node->next=temp->next;
+ temp->next=new_node;
+ }
+}
+//INSERT AFTER A VALUE
+void insert_after()
+{
+ struct node*new_node,*temp,*pre_temp;
+ int num;
+ new_node=(struct node*)malloc(sizeof(struct node));
+ printf("\n enter number after which data has to be inserted:");
+ scanf("%d",&num);
+ printf("\nenter number to be inserted:");
+ scanf("%d",&new_node->data);
+ temp=start;
+ while(pre_temp->data!=num)
+ {
+ pre_temp=temp;
+ temp=temp->next;
+ }
+ printf("%d inserted after %d",new_node->data,num);
+ pre_temp->next=new_node;
+ new_node->next=temp;
+};
+//INSERT BEFORE A VALUE
+void insert_before( )
+{
+ struct node*new_node,*temp,*pre_temp;
+ int num;
+ new_node=(struct node*)malloc(sizeof(struct node));
+ printf("\n enter number before which data has to be inserted:");
+ scanf("%d",&num);
+ printf("\n enter number to be inserted:");
+ scanf("%d",&new_node->data);
+ temp=start;
+ if(temp->data==num)
+ {
+ new_node->next=start;
+ while(temp->next!=start)
+ {
+ temp=temp->next;
+ }
+ start=new_node;
+ temp->next=new_node;
+ }
+ else
+ {
+ while(temp->data!=num)
+ {
+ pre_temp=temp;
+ temp=temp->next;
+ }
+ printf("\n %d inserted before %d",new_node->data,num);
+ pre_temp->next=new_node;
+ new_node->next=temp;
+ }
+}
+//DELETE AT A POSITION
+void delete_pos()
+{
+ struct node*temp,*ptr,*pre_temp;
+ int num,position,count=0;
+ printf("\n enter position:");
+ scanf("%d",&position);
+ if(start==NULL)
+ {
+ printf("CIRCULAR LINKED LIST IS EMPTY");
+ }
+ else
+ {
+ if(position==1)
+ {
+ temp=start;
+ ptr=start;
+ while(ptr->next!=start)
+ {
+ ptr=ptr->next;
+ }
+ ptr->next=temp->next;
+ start=temp->next;
+ }
+ else
+ {
+ temp=start;
+ while(count<position-1)
+ {
+ pre_temp=temp;
+ temp=temp->next;
+ count+=1;
+ }
+ pre_temp->next=temp->next;
+ }
+ }
+}
+//DELETE AFTER A VALUE
+void delete_after()
+{
+ struct node*temp,*pre_temp;
+ int num;
+ temp=start;
+ if(start==NULL)
+ printf("\nCIRCULAR LINKED LIST IS EMPTY");
+ else
+ {
+ printf("\n enter the number after which the node has to be deleted:");
+ scanf("%d",&num);
+ while(pre_temp->data!=num)
+ {
+ pre_temp=temp;
+ temp=temp->next;
+ }
+ printf("\n %d deleted from the linked list",temp->data);
+ pre_temp->next=temp->next;
+ }
+}
+//DELETE BEFORE A VALUE
+void delete_before()
+{
+struct node*temp,*ptr;
+int num;
+printf("\n enter value before which value has to deleted:");
+scanf("%d",&num);
+temp=start;
+if(start==NULL)
+ printf("\n CIRCULAR LINKED LIST IS EMPTY");
+ else if(temp->next->data==num)
+{
+ printf("\n %d deleted from linked list. ",temp->data);
+ start=start->next;
+}
+else
+ {
+while(temp->next->next->data!=num && temp->next->next!=NULL)
+{
+ temp=temp->next;
+}
+printf("\n %d deleted from the linked list",temp->next->data);
+ptr=temp->next;
+temp->next=temp->next->next;
+free (ptr);
+ }
+}
+//UPDATE AT ANY POSITION
+void update_pos()
+{
+ struct node*temp,*ptr;
+ int num,position,count=0;
+ printf("\nenter position:");
+ scanf("%d",&position);
+ printf("\nenter value to be updated:");
+ scanf("%d",&num);
+ if(start==NULL)
+ printf("\nCIRCULAR LINKED LIST IS EMPTY");
+ else
+ {
+ if(position==1)
+ {
+ temp=start;
+ temp->data=num;
+ ptr=start;
+ while(ptr->next!=start)
+ {
+ ptr=ptr->next;
+ }
+ ptr->next=temp;
+ start=temp;
+ }
+ else
+ {
+ temp=start;
+ while(count<position-1)
+ {
+ temp=temp->next;
+ count=count+1;
+ }
+ temp->data=num;
+ }
+ }
+}
+//UPDATE AFTER A VALUE
+void update_after()
+{
+struct node*temp,*pre_temp;
+int num,no;
+if(start==NULL)
+ printf("\n CIRCULAR LINKED LIST IS EMPTY");
+else
+{
+ printf("\n enter value after which value has to updated:");
+scanf("%d",&no);
+printf("\n enter value to be updated:");
+scanf("%d",&num);
+temp=start;
+while(pre_temp->data!=no)
+ {
+ pre_temp=temp;
+ temp=temp->next;
+ }
+ printf("\n value updated");
+ temp->data=num;
+ pre_temp->next=temp;
+}
+}
+//UPDATE BEFORE A VALUE
+void update_before()
+{
+struct node*temp,*ptr;
+int num,no;
+if(start==NULL)
+ printf("\n CIRCULAR LINKED LIST IS EMPTY");
+ else
+{
+ printf("\n enter value before which value has to updated:");
+scanf("%d",&num);
+printf("\n enter value to be updated:");
+scanf("%d",&no);
+temp=start;
+if(temp->next->data==num)
+{
+ temp->data=no;
+}
+else
+ {
+while(temp->next->next->data!=num && temp->next->next!=NULL)
+{
+ temp=temp->next;
+}
+temp->next->data=no;
+ }
+ printf("\n value updated!!");
+}
+}
+//COUNT NO OF NODES
+void count_nodes()
+{
+ struct node *temp;
+ int count=1;
+ temp=start;
+ if(start== NULL)
+ {
+ printf("\n CIRCULAR LINKED LIST IS EMPTY");
+ }
+ else
+ {
+ while(temp -> next != start)
+ {
+ count+=1;
+ temp = temp-> next;
+ }
+ printf("\n NO OF NODES:%d",count);
+ }
+}
+//SEARCH DATA IN LINKED LIST
+void search_data()
+{
+ struct node*temp;
+ int num,node_no=1,found=0;
+ temp=start;
+ printf("\n enter element to be searched:");
+ scanf("%d",&num);
+ if(start==NULL)
+ printf("\n CIRCULAR LINKED LIST IS EMPTY");
+ else
+ {
+ while(temp->next!=start)
+ {
+ if(temp->data==num)
+ {
+ found=1;
+ break;
+ }
+ else
+ { node_no+=1;
+ temp=temp->next;
+ }
+ }
+ if(temp->data==num)
+ {
+ found=1;
+ }
+ if(found!=1)
+ printf("\n %d not found",num);
+ else
+ printf("\n element %d found at node %d",num,node_no);
+ }
+}
+//DISPLAY LIST
+ void display()
+{
+ struct node *temp;
+ temp=start;
+ if(start== NULL)
+ {
+ printf("\n CIRCULAR LIST IS EMPTY");
+ }
+ else
+ {
+ printf("\n ELEMENTS OF THE CIRCULAR LINKED LIST:\t");
+ while(temp -> next != start)
+ {
+ printf("%d\t", temp -> data);
+ temp = temp-> next;
+ }
+ printf("%d\n", temp -> data);
+ }
+}
+int main()
+{
+ int opt;
+ do
+ {
+ printf("\n\n##ENTER OPERATION TO BE PERFORMED## ");
+ printf("\n 1.CREATE A CIRCULAR LINKED LIST");
+ printf("\n 2.INSERT A NODE AT ANY POSITION");
+ printf("\n 3.INSERT A NODE AFTER A NODE");
+ printf("\n 4.INSERT A NODE BEFORE A NODE");
+ printf("\n 5.DELETE A NODE AT ANY POSITION");
+ printf("\n 6.DELETE A NODE AFTER A NODE");
+ printf("\n 7.DELETE A NODE BEFORE A NODE");
+ printf("\n 8.UPDATE VALUE AT ANY POSITION");
+ printf("\n 9.UPDATE VALUE AFTER A NODE");
+ printf("\n 10.UPDATE VALUE BEFORE A NODE");
+ printf("\n 11.SEARCH AN ELEMENT");
+ printf("\n 12.COUNT NO OF NODES IN CLL");
+ printf("\n 13.DISPLAY CIRCULAR LINKED LIST");
+ printf("\n 14.EXIT");
+ printf("\nENTER OPERATION NO:");
+ scanf("%d",&opt);
+ switch(opt)
+ {
+ case 1:create();
+ break;
+ case 2:insert_pos();
+ break;
+ case 3:insert_after();
+ break;
+ case 4:
+ insert_before();
+ break;
+ case 5:delete_pos();
+ break;
+ case 6:delete_after();
+ break;
+ case 7:delete_before();
+ break;
+ case 8:update_pos();
+ break;
+ case 9:update_after();
+ break;
+ case 10:update_before();
+ break;
+ case 11:search_data();
+ break;
+ case 12:count_nodes();
+ break;
+ case 13:display();
+ break;
+ case 14:break;
+ default: printf("enter valid operation no");
+ break;
+ }
+ }while (opt!=14 );
+ return 0;
+}
