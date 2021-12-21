@@ -1,0 +1,92 @@
+#include <stdio.h>
+//INSERTION SORT
+void insertion_sort(int a[],int n)
+{
+int i,j,temp;
+printf("\n before using insertion sort:");
+ for(i=0;i<n;i++)
+ {
+ printf("\t%d",a[i]);
+ }
+for(i=0;i<n;i++)
+{
+ temp=a[i];
+ j=i-1;
+ while((temp<a[j])&& (j>=0))
+ {
+ a[j+1]=a[j];
+ j--;
+ }
+ a[j+1]=temp;
+}
+printf("\n after using insertion sort:");
+ for(i=0;i<n;i++)
+ {
+ printf("\t%d",a[i]);
+ }
+}
+int small(int a[],int i,int n)
+{
+ int j,num=a[i],index=i;
+ for(j=i+1;j<n;j++)
+ {
+ if(a[j]<num)
+ {
+ num=a[j];
+ index=j;
+ }
+ }
+ return index;
+}
+//SELECTION SORT
+void selection_sort(int a[],int n)
+{
+int index,temp,i;
+printf("\n before using selection sort:");
+ for(i=0;i<n;i++)
+ {
+ printf("\t%d",a[i]);
+ }
+for(i=0;i<n;i++)
+{
+ index=small(a,i,n);
+ temp=a[i];
+ a[i]=a[index];
+ a[index]=temp;
+}
+printf("\n after using selection sort:");
+ for(i=0;i<n;i++)
+ {
+ printf("\t%d",a[i]);
+ }
+}
+int main()
+{
+int opt,n,i,a[100];
+do{
+printf("\n\n##ENTER OPERATION TO BE PERFORMED##");
+printf("\n1.CREATE AN ARRAY");
+printf("\n2.SORTING USING INSERTION SORT ");
+printf("\n3.SORTING USING SELECTION SORT ");
+printf("\n4.EXIT");
+printf("\n ENTER OPERATION NO:");
+scanf("%d",&opt);
+switch(opt)
+{
+ case 1:printf("\n enter number of elements in an array:");
+ scanf("%d",&n);
+ printf("\n enter the elements:\n");
+ for(i=0;i<n;i++)
+ {
+ scanf("%d",&a[i]);
+ }
+ break;
+ case 2:insertion_sort(a,n);
+ break;
+ case 3:selection_sort(a,n);
+ break;
+ case 4:break;
+}
+}while(opt!=4);
+return 0;
+}
