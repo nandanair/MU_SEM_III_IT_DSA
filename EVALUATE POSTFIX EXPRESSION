@@ -1,0 +1,93 @@
+#include <stdio.h>
+#include<string.h>
+int stack_arr[200];
+int top=-1;
+
+
+void push(int data)
+{
+
+  top+=1;
+  stack_arr[top]=data;
+}
+
+int pop()
+{
+if(top!=-1)
+   {
+
+    int value=stack_arr[top];
+        top-=1;
+        return value;
+   }
+   else
+    return -1;
+
+}
+void eval_postfix(char stack[])
+{
+
+  int MAX=0,op1=0,op2=0,result=0,val=0;
+   MAX=strlen(stack);
+    for(int i=0;i<=MAX-1;i++)
+    {
+        if (stack[i]=='+'||stack[i]=='-'||stack[i]=='*'||stack[i]=='/')
+        {
+
+            op2=pop();
+            op1=pop();
+            if(op1!=-1&&op2!=-1)
+            {
+
+
+            switch(stack[i])
+            {
+            case'+':
+                result=op1+op2;
+                break;
+            case'-':
+                result=op1-op2;
+                break;
+            case'*':
+                result=op1*op2;
+                break;
+            case'/':
+                result=op1/op2;
+                break;
+            }
+            push(result);
+            }
+        }
+        else
+        {
+            val=stack[i]-'0';
+            push(val);
+        }
+    }
+display_result();
+
+
+
+
+}
+int display_result()
+{
+    if(top ==0)
+        printf("RESULT=%d",stack_arr[0]);
+     else
+         printf("INVALID EXPRESSION");
+
+}
+int main()
+{
+    char stack[200];
+    int MAX=0,op1=0,op2=0,result=0,val=0;
+    printf("enter postfix expression:");
+    gets(stack);
+    eval_postfix(stack);
+
+
+
+return 0;
+}
+
