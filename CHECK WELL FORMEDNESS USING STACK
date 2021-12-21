@@ -1,0 +1,65 @@
+#include <stdio.h>
+#include<string.h>
+#define MAX 10
+int stack_arr[MAX];
+int top=-1;
+void push(int data)          //PUSH OPERATION
+{
+    if(top==MAX-1)
+    {
+        printf("\nSTACK OVERFLOW\n");
+    }
+    else
+    {
+        top+=1;
+        stack_arr[top]=data;
+    }
+}
+int pop()               // POP OPERATION
+{
+    int value;
+    if(top==-1)
+    {
+    printf("\nSTACK IS EMPTY\n");
+   
+    }
+    else
+    {
+        value=stack_arr[top];
+        top-=1;
+        return value;
+    }
+}
+int main()
+{
+    char str[200];
+    int check=0,temp=0;
+    printf("enter:");
+    gets(str);
+   int n=strlen(str);
+   for(int i=0;i<n;i++)
+   {
+       if(str[i]=='{'||str[i]=='('||str[i]=='[')
+       push(str[i]);
+        if (str[i]=='}'||str[i]==')'||str[i]==']')
+       {
+           temp=pop();
+           if((str[i]=='}')&& (temp=='{'))
+           check+=1;
+           if((str[i]==')')&& (temp=='('))
+           check+=1;
+           if((str[i]==']')&& (temp=='['))
+           check+=1;
+       }
+   }
+   if(top!=-1)
+   check=0;
+   if (check!=0)
+   printf("valid");
+   else
+   printf("invalid");
+}
+
+
+
+
