@@ -1,0 +1,117 @@
+#include<stdio.h>
+#include<stdlib.h>
+int top=-1;
+int stack[100];
+struct node
+{
+    int data;
+    struct node*next;
+};
+struct node*start=NULL;
+//push=insert at beginning of ll
+struct node* push(struct node*start,int MAX)
+{
+    struct node*new_node;
+    if(top==MAX-1)
+    {
+        printf("\nSTACK OVERFLOW\n");
+    }
+    else
+    {
+        top+=1;
+        new_node=(struct node*)malloc(sizeof(struct node));
+        int num;
+        printf("\n enter element to be inserted:");
+        scanf("%d",&num);
+        new_node->data=num;
+        new_node->next=start;
+        start=new_node;
+        printf("\n element inserted");
+
+    }
+return start;
+}
+//pop=delete at the beginning
+struct node*pop(struct node*start)
+{
+    struct node*temp;
+    int value;
+    temp=start;
+    if(top==-1)
+    {
+    printf("\nSTACK IS EMPTY\n");
+    }
+    else
+    {
+        top-=1;
+        value=temp->data;
+        printf("%d popped from stack.",value);
+        start=start->next;
+        free(temp);
+        //return value;
+    }
+    return start;
+}
+struct node*peek(struct node*start)
+{
+    struct node*temp;
+    int value;
+    temp=start;
+    if(top==-1)
+    {
+    printf("\nSTACK IS EMPTY\n");
+    }
+    else
+    {
+      value=temp->data;
+      printf("\nThe topmost element of stack:%d",value);
+    }
+    return start;
+}
+struct node* display(struct node*start)
+{
+    struct node*temp;
+    temp=start;
+    if(start==NULL)
+        printf("\n LINKED LIST IS EMPTY");
+        else
+    {
+        printf("\n elements of the linked list:");
+        while(temp!=NULL)
+    {
+        printf("\t%d",temp->data);
+        temp=temp->next;
+    }
+    }
+    return start;
+
+}
+int main()
+{
+int opt,MAX;
+printf("enter max value:");
+scanf("%d",&MAX);
+do{
+    printf("\n\n***ENTER OPERATION TO BE EXECUTED***");
+    printf("\n1.PUSH");
+    printf("\n2.PEEK");
+    printf("\n3.POP");
+    printf("\n4.DISPLAY");
+    printf("\n5.EXIT");
+    printf("\nOPERATION NO:");
+    scanf("%d",&opt);
+    switch(opt)
+    {
+    case 1:start=push(start,MAX);
+           break;
+    case 2:start=peek(start);
+           break;
+    case 3:start=pop(start);
+           break;
+    case 4:start=display(start);
+           break;
+    case 5:break;
+
+    }
+}while(opt!=5);
+}
